@@ -45,7 +45,7 @@ module.exports.connections = {
   // and database name
   postgresql: {
     adapter     : 'sails-postgresql',
-    host        : 'localhost',
+    host        : process.env.POSTGRES_PORT_5432_TCP_ADDR || 'localhost',
     user        : 'midas',
     password    : 'midas',
     database    : 'midas',
