@@ -134,6 +134,7 @@ exports.login = function (req, identifier, password, next) {
 console.log ('query:', query);
 User.find({}, function (err, users) {
   console.log ('all users:', users);
+
 });
   User.findOne(query, function (err, user) {
     if (err) return next(err);
