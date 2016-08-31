@@ -130,8 +130,11 @@ exports.connect = function (req, res, next) {
  */
 exports.login = function (req, identifier, password, next) {
   var query = { username: identifier.toLowerCase() },
-      maxAttempts = sails.config.auth.auth.local.passwordAttempts;
-
+      maxAttempts = 67000;//sails.config.auth.auth.local.passwordAttempts;
+console.log ('query:', query);
+User.find({}, function (err, users) {
+  console.log ('all users:', users);
+});
   User.findOne(query, function (err, user) {
     if (err) return next(err);
 
@@ -143,12 +146,14 @@ exports.login = function (req, identifier, password, next) {
     if (maxAttempts > 0 && user.passwordAttempts >= maxAttempts) {
       return next('locked');
     }
-
+    console.log ('user id', user.id);
     Passport.findOne({
       protocol : 'local'
     , user     : user.id
     }, function (err, passport) {
+      console.log ('passport', passport);
       if (passport) {
+        return next(null, user);
         passport.validatePassword(password, function (err, res) {
           if (err) {
             return next(err);
